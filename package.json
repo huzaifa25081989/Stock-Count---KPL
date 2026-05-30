@@ -1,0 +1,53 @@
+{
+  "name": "auditpro-inventory-audit",
+  "version": "2.0.0",
+  "description": "AuditPro – SAP S/4HANA Inventory Audit System for Flexible Packaging",
+  "private": true,
+  "homepage": "./",
+  "dependencies": {
+    "@capacitor/android": "^6.0.0",
+    "@capacitor/app": "^6.0.0",
+    "@capacitor/camera": "^6.0.0",
+    "@capacitor/core": "^6.0.0",
+    "@capacitor/haptics": "^6.0.0",
+    "@capacitor/keyboard": "^6.0.0",
+    "@capacitor/status-bar": "^6.0.0",
+    "@capacitor/toast": "^6.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-scripts": "5.0.1",
+    "workbox-background-sync": "^7.0.0",
+    "workbox-broadcast-update": "^7.0.0",
+    "workbox-cacheable-response": "^7.0.0",
+    "workbox-core": "^7.0.0",
+    "workbox-expiration": "^7.0.0",
+    "workbox-google-analytics": "^7.0.0",
+    "workbox-navigation-preload": "^7.0.0",
+    "workbox-precaching": "^7.0.0",
+    "workbox-range-requests": "^7.0.0",
+    "workbox-routing": "^7.0.0",
+    "workbox-strategies": "^7.0.0",
+    "workbox-streams": "^7.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.0.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "cap:init": "npx cap init AuditPro com.abcflexpack.auditpro",
+    "cap:add:android": "npx cap add android",
+    "cap:sync": "npx cap sync",
+    "cap:open:android": "npx cap open android",
+    "build:android": "npm run build && npx cap sync android"
+  },
+  "eslintConfig": {
+    "extends": ["react-app", "react-app/jest"]
+  },
+  "browserslist": {
+    "production": [">0.2%", "not dead", "not op_mini all"],
+    "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
+  }
+}

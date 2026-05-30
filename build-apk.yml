@@ -1,0 +1,95 @@
+name: Build AuditPro Android APK
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Set up Java 17 (required for Android build)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Accept Android SDK licenses
+        run: yes | sdkmanager --licenses || true
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Build React app (production)
+        run: npm run build
+        env:
+          CI: false
+
+      - name: Install Capacitor CLI
+        run: npm install -g @capacitor/cli
+
+      - name: Sync Capacitor Android
+        run: npx cap sync android
+
+      - name: Grant Gradle execute permission
+        run: chmod +x android/gradlew
+
+      - name: Build Debug APK
+        run: |
+          cd android
+          ./gradlew assembleDebug --no-daemon
+
+      - name: Upload Debug APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: AuditPro-Debug-APK
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 30
+
+      - name: Build Release APK (unsigned)
+        run: |
+          cd android
+          ./gradlew assembleRelease --no-daemon
+        continue-on-error: true
+
+      - name: Upload Release APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: AuditPro-Release-APK
+          path: android/app/build/outputs/apk/release/app-release-unsigned.apk
+          retention-days: 30
+
+  build-desktop:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run build
+        env:
+          CI: false
+      - name: Upload Web Build (Desktop PWA)
+        uses: actions/upload-artifact@v4
+        with:
+          name: AuditPro-Desktop-Web
+          path: build/
+          retention-days: 30
