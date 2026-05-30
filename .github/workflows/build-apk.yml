@@ -1,6 +1,6 @@
 name: Build AuditPro Android APK
 
-on:
+"on":
   push:
     branches: [main]
   workflow_dispatch:
@@ -54,16 +54,3 @@ jobs:
         with:
           name: AuditPro-APK
           path: android/app/build/outputs/apk/debug/app-debug.apk
- Copy the entire text above — from the word name: at the top all the way to the last line. Do not miss any lines.
-5
-After committing — go to Actions tab
-As soon as you click Commit new file, GitHub will immediately start building. Now go to the Actions tab and you will see:
-Actions tab — what you should now see
-Build AuditPro Android APK
-Running... · triggered by: Create .github/workflows/build-apk.yml
-~8 min
-Yellow circle = building right now. Wait for green tick.
- When it turns green → click on it → scroll to bottom → download AuditPro-APK artifact.
-Tell me what you see right now
-When you click the Code tab — do you see a .github folder listed?
-If yes — click it. Does it have a wor
