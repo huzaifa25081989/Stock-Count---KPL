@@ -1,1 +1,69 @@
+name: Build AuditPro Android APK
 
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Accept licenses
+        run: yes | sdkmanager --licenses || true
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build React app
+        run: npm run build
+        env:
+          CI: false
+
+      - name: Add Android platform
+        run: |
+          npm install -g @capacitor/cli
+          npx cap add android || true
+          npx cap sync android
+
+      - name: Build APK
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: AuditPro-APK
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+ Copy the entire text above — from the word name: at the top all the way to the last line. Do not miss any lines.
+5
+After committing — go to Actions tab
+As soon as you click Commit new file, GitHub will immediately start building. Now go to the Actions tab and you will see:
+Actions tab — what you should now see
+Build AuditPro Android APK
+Running... · triggered by: Create .github/workflows/build-apk.yml
+~8 min
+Yellow circle = building right now. Wait for green tick.
+ When it turns green → click on it → scroll to bottom → download AuditPro-APK artifact.
+Tell me what you see right now
+When you click the Code tab — do you see a .github folder listed?
+If yes — click it. Does it have a wor
